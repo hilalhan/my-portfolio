@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(cuid())
+  name String 
+  description String?
+  aboutMe String
+  imageUrl String?
+  stacks String[]
+  email String @unique
+  resumeUrl String?
+  experience Experience[]
+  projects Project[]
+  socialMedias SocialMedia[]
+  educations Education[]
+}
+
+model Experience {
+  id String @id @default(cuid())
+  title String
+  company String
+  startDate DateTime
+  endDate DateTime?
+  description String?
+  userId String
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Project {
+  id String @id @default(cuid())
+  title String
+  description String?
+  url String?
+  stacks String[]
+  userId String
+  user User @relation(fields: [userId], references: [id])
+}
+
+model SocialMedia {
+  id String @id @default(cuid())
+  platform PlatformType
+  url String?
+  userId String
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Education {
+  id String @id @default(cuid())
+  institution String
+  degree String
+  startDate DateTime
+  endDate DateTime?
+  userId String
+  user User @relation(fields: [userId], references: [id])
+}
+
+enum PlatformType {
+  GITHUB
+  LINKEDIN
+  TWITTER
+  INSTAGRAM
+  FACEBOOK
+  YOUTUBE
+  TIKTOK
+  OTHER
+}
