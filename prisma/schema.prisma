@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -18,7 +17,8 @@ model User {
   id String @id @default(cuid())
   name String 
   description String?
-  aboutMe String
+  jobTitle String?
+  aboutMe String?
   imageUrl String?
   stacks String[]
   email String @unique
@@ -73,6 +73,7 @@ enum PlatformType {
   LINKEDIN
   TWITTER
   INSTAGRAM
+  STACKOVERFLOW
   FACEBOOK
   YOUTUBE
   TIKTOK
