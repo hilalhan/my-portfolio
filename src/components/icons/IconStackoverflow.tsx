@@ -4,7 +4,7 @@ const IconStackoverflow = () => {
   return (
     <div>
       <svg
-        fill="#7F7F7F"
+        stroke="#fff"
         xmlns="http://www.w3.org/2000/svg"
         enableBackground="new 0 0 24 24"
         viewBox="0 0 24 24"

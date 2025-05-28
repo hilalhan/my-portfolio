@@ -22,6 +22,10 @@ export const configMetadata = {
       href: "#",
     },
     {
+      name: "About",
+      href: "#about",
+    },
+    {
       name: "Experiences",
       href: "#experiences",
     },

@@ -23,6 +23,7 @@ model User {
   stacks String[]
   email String @unique
   resumeUrl String?
+  address String?
   experience Experience[]
   projects Project[]
   socialMedias SocialMedia[]

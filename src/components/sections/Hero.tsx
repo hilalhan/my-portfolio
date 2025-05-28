@@ -34,7 +34,7 @@ export default function Hero({ user, socialMedias }: IProps) {
             className="order-2 lg:order-1"
           >
             <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-              Software Engineer
+              {user.jobTitle}
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6">
               <span className="mr-2">Hi, I&apos;m</span>
@@ -65,9 +65,9 @@ export default function Hero({ user, socialMedias }: IProps) {
                 className="text-primary"
               />
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mb-8 leading-relaxed">
+            {/* <p className="text-xl text-muted-foreground max-w-2xl mb-8 leading-relaxed">
               {user.description}
-            </p>
+            </p> */}
 
             <div className="flex flex-wrap gap-4 mb-8">
               <Button size="lg" className="rounded-fu</div>ll gap-2">
