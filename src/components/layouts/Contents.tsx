@@ -1,6 +1,5 @@
 "use client";
 
-// import { useEffect } from "react";
 import { About, Hero } from "../sections";
 import { ThemeProvider } from "next-themes";
 import { SocialMedia, User } from "@prisma/client";

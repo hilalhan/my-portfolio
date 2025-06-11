@@ -65,9 +65,9 @@ export default function Hero({ user, socialMedias }: IProps) {
                 className="text-primary"
               />
             </h2>
-            {/* <p className="text-xl text-muted-foreground max-w-2xl mb-8 leading-relaxed">
+            <p className="text-xl text-muted-foreground max-w-2xl mb-8 leading-relaxed">
               {user.description}
-            </p> */}
+            </p>
 
             <div className="flex flex-wrap gap-4 mb-8">
               <Button size="lg" className="rounded-fu</div>ll gap-2">

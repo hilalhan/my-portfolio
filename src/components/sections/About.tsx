@@ -64,7 +64,7 @@ export default function About({ user }: IProps) {
                   className="object-cover"
                 />
               </div>
-              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-primary rounded-full hidden md:block"></div>
+              {/* <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-primary rounded-full hidden md:block"></div> */}
               <div className="absolute -top-6 -left-6 w-16 h-16 bg-primary/10 rounded-full hidden md:block"></div>
             </motion.div>
 

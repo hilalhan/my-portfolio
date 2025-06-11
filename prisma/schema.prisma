@@ -39,6 +39,8 @@ model Experience {
   description String?
   userId String
   user User @relation(fields: [userId], references: [id])
+  stacks String[]
+  location String?
 }
 
 model Project {
