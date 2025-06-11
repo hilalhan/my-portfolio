@@ -1,6 +1,6 @@
 import Header from "../../components/layouts/Header";
 import { configMetadata } from "@/config";
-import { getSocialMedias, getUser } from "../actions";
+import { getExperiences, getSocialMedias, getUser } from "../actions";
 import Contents from "@/components/layouts/Contents";
 
 const { navItems } = configMetadata;
@@ -8,8 +8,10 @@ const { navItems } = configMetadata;
 export default async function Home() {
   const userResponse = await getUser();
   const socialMediaResponse = await getSocialMedias();
+  const experienceResponse = await getExperiences();
   const { message, status, data: user } = userResponse;
   const { data: socialMedias } = socialMediaResponse;
+  const { data: experiences } = experienceResponse;
 
   if (status !== 200 || !user) {
     return (
@@ -23,7 +25,11 @@ export default async function Home() {
     <div>
       <Header navItems={navItems} user={user} />
       <main>
-        <Contents user={user} socialMedias={socialMedias} />
+        <Contents
+          user={user}
+          socialMedias={socialMedias}
+          experiences={experiences}
+        />
       </main>
     </div>
   );

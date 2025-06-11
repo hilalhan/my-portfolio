@@ -1,4 +1,5 @@
 import Hero from "./Hero";
 import About from "./About";
+import ExperienceTimeline from "./ExperienceTimeline";
 
-export { Hero, About };
+export { Hero, About, ExperienceTimeline };
