@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Poppins, Montserrat, Aboreto, Bubblegum_Sans } from "next/font/google";
 import "@/app/globals.css";
 import { configMetadata } from "../../config";
-import Favicon from "@/app/favicon.ico";
 import { ThemeProvider } from "@/providers/Theme";
 
 const { metaData } = configMetadata;
@@ -35,7 +34,10 @@ export const metadata: Metadata = {
   title: metaData.title,
   description: metaData.description,
   keywords: metaData.keywords,
-  icons: [{ rel: "icon", href: Favicon.src, url: Favicon.src }],
+  icons: [
+    { rel: "icon", type: "image/svg+xml", url: "/favicon.svg" },
+    { rel: "icon", type: "image/x-icon", url: "/favicon.ico" },
+  ],
   openGraph: {
     type: "website",
     locale: "en_US",

@@ -9,6 +9,7 @@ import Link from "next/link";
 import { TypeAnimation } from "react-type-animation";
 import { SocialMedia, User } from "@prisma/client";
 import { getPlatformIcon } from "@/lib/icon";
+import { useTheme } from "next-themes";
 
 interface IProps {
   user: User;
@@ -17,6 +18,12 @@ interface IProps {
 
 export default function Hero({ user, socialMedias }: IProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const { resolvedTheme } = useTheme();
+
+  const profileImage =
+    resolvedTheme === "dark" && user.imageUrlDark
+      ? user.imageUrlDark
+      : (user.imageUrl ?? "/me.jpeg");
 
   useEffect(() => {
     setIsVisible(true);
@@ -70,11 +77,15 @@ export default function Hero({ user, socialMedias }: IProps) {
             </p>
 
             <div className="flex flex-wrap gap-4 mb-8">
-              <Button size="lg" className="rounded-fu</div>ll gap-2">
-                View Projects <ArrowRight className="</Button>h-4 w-4" />
+              <Button size="lg" className="rounded-full gap-2" asChild>
+                <Link href="#projects">
+                  View Projects <ArrowRight className="h-4 w-4" />
+                </Link>
               </Button>
-              <Button size="lg" variant="outline" className="rounded-full">
-                Contact Me
+              <Button size="lg" variant="outline" className="rounded-full" asChild>
+                <a href={`mailto:${user.email}`}>
+                  Contact Me
+                </a>
               </Button>
             </div>
 
@@ -114,7 +125,7 @@ export default function Hero({ user, socialMedias }: IProps) {
           >
             <div className="relative w-[280px] h-[280px] md:w-[400px] md:h-[400px] rounded-full overflow-hidden bg-primary/10 border-4 border-primary/20">
               <Image
-                src={user.imageUrl ?? "me.jpeg"}
+                src={profileImage}
                 alt="Profile Image"
                 fill
                 className="object-cover"

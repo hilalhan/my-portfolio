@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { ICommonResponse } from "../types";
-import { Experience, SocialMedia, User } from "@prisma/client";
+import { Experience, Project, SocialMedia, User } from "@prisma/client";
 
 export async function getUser(): Promise<ICommonResponse<User>> {
   const response: ICommonResponse<User> = {
@@ -72,6 +72,28 @@ export async function getExperiences(): Promise<ICommonResponse<Experience[]>> {
     return response;
   } catch (error) {
     console.error("Error fetching experiences:", error);
+    response.status = 500;
+    response.message = "Internal Server Error";
+    return response;
+  }
+}
+
+export async function getProjects(): Promise<ICommonResponse<Project[]>> {
+  const response: ICommonResponse<Project[]> = {
+    status: 200,
+    message: "success",
+  };
+  try {
+    const projects = await prisma.project.findMany();
+    if (!projects) {
+      response.status = 404;
+      response.message = "Projects not found";
+      return response;
+    }
+    response.data = projects;
+    return response;
+  } catch (error) {
+    console.error("Error fetching projects:", error);
     response.status = 500;
     response.message = "Internal Server Error";
     return response;

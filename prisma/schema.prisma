@@ -20,6 +20,9 @@ model User {
   jobTitle String?
   aboutMe String?
   imageUrl String?
+  imageUrlDark String?
+  aboutImageUrl String?
+  aboutImageUrlDark String?
   stacks String[]
   email String @unique
   resumeUrl String?

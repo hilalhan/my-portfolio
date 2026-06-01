@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Download, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { User } from "@prisma/client";
+import Logo from "@/components/common/Logo";
 
 interface IProps {
   navItems: { name: string; href: string }[];
@@ -16,9 +17,9 @@ interface IProps {
 export default function Header({ navItems, user }: IProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
   const { theme, setTheme } = useTheme();
 
-  // Handle scroll event to change header appearance
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -26,6 +27,26 @@ export default function Header({ navItems, user }: IProps) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const sectionIds = navItems.map((item) => item.href.replace("#", ""));
+
+    const observers = sectionIds.map((id) => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveSection(id);
+        },
+        { threshold: 0.3, rootMargin: "-80px 0px -20% 0px" }
+      );
+      observer.observe(el);
+      return observer;
+    });
+
+    return () => observers.forEach((obs) => obs?.disconnect());
+  }, [navItems]);
 
   return (
     <header
@@ -39,24 +60,29 @@ export default function Header({ navItems, user }: IProps) {
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="#home" className="flex items-center">
-            <span className="text-xl font-bold text-primary">
-              <span className="text-primary">H</span>
-              <span className="text-primary">H</span>
-            </span>
+          <Link href="#home" className="flex items-center gap-2.5">
+            <Logo />
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.replace("#", "");
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    "text-sm font-medium transition-colors relative",
+                    isActive
+                      ? "text-primary after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-primary after:rounded-full"
+                      : "text-muted-foreground hover:text-primary"
+                  )}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Theme toggle and Resume button */}
@@ -115,16 +141,22 @@ export default function Header({ navItems, user }: IProps) {
       {isOpen && (
         <div className="md:hidden bg-background/95 backdrop-blur-md shadow-md">
           <div className="px-4 pt-2 pb-4 space-y-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="block py-2 text-base font-medium text-muted-foreground hover:text-primary"
-                onClick={() => setIsOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.replace("#", "");
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    "block py-2 text-base font-medium transition-colors",
+                    isActive ? "text-primary" : "text-muted-foreground hover:text-primary"
+                  )}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
             <Button className="flex items-center gap-2" asChild>
               <a
                 href={user.resumeUrl || "/resume.pdf"}

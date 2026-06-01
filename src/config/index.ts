@@ -19,7 +19,7 @@ export const configMetadata = {
   navItems: [
     {
       name: "Home",
-      href: "#",
+      href: "#home",
     },
     {
       name: "About",

@@ -5,13 +5,29 @@ import { useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { User } from "@prisma/client";
+import { Experience, Project, User } from "@prisma/client";
+import { useTheme } from "next-themes";
 
 interface IProps {
   user: User;
+  experiences: Experience[] | undefined;
+  projects: Project[] | undefined;
 }
 
-export default function About({ user }: IProps) {
+export default function About({ user, experiences, projects }: IProps) {
+  const { resolvedTheme } = useTheme();
+
+  const aboutImage =
+    resolvedTheme === "dark" && user.aboutImageUrlDark
+      ? user.aboutImageUrlDark
+      : user.aboutImageUrl ?? null;
+
+  const yearsExperience = experiences?.length
+    ? Math.floor(
+        (Date.now() - Math.min(...experiences.map((e) => new Date(e.startDate).getTime()))) /
+          (1000 * 60 * 60 * 24 * 365)
+      )
+    : 0;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.2 });
 
@@ -53,23 +69,27 @@ export default function About({ user }: IProps) {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left Column: Image */}
-            <motion.div variants={itemVariants} className="relative">
-              <div className="relative overflow-hidden rounded-lg h-[500px]">
-                <Image
-                  src="https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg"
-                  alt="Working on laptop"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              {/* <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-primary rounded-full hidden md:block"></div> */}
-              <div className="absolute -top-6 -left-6 w-16 h-16 bg-primary/10 rounded-full hidden md:block"></div>
-            </motion.div>
+          <div className={`grid grid-cols-1 gap-12 items-center ${aboutImage ? "lg:grid-cols-2" : ""}`}>
+            {/* Left Column: Image (only rendered if aboutImage is set) */}
+            {aboutImage && (
+              <motion.div variants={itemVariants} className="relative">
+                <div className="relative overflow-hidden rounded-lg h-[500px]">
+                  <Image
+                    src={aboutImage}
+                    alt="Working on laptop"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="absolute -top-6 -left-6 w-16 h-16 bg-primary/10 rounded-full hidden md:block"></div>
+              </motion.div>
+            )}
 
             {/* Right Column: Content */}
-            <motion.div variants={itemVariants}>
+            <motion.div
+              variants={itemVariants}
+              className={!aboutImage ? "max-w-2xl mx-auto w-full" : ""}
+            >
               <h3 className="text-2xl font-bold mb-4">
                 A passionate{" "}
                 <span className="text-primary">
@@ -77,15 +97,6 @@ export default function About({ user }: IProps) {
                 </span>{" "}
                 based in {user.address}
               </h3>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
-                {user.description}
-              </p>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
-                When I&apos;m not coding, you&apos;ll find me exploring new
-                technologies, contributing to open source projects, or enjoying
-                the outdoors. I believe in continuous learning and sharing
-                knowledge with the development community.
-              </p>
 
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div>
@@ -123,12 +134,12 @@ export default function About({ user }: IProps) {
           {/* Stats Cards */}
           <motion.div
             variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-16"
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16"
           >
             <motion.div variants={itemVariants}>
               <Card className="text-center hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
-                  <h3 className="text-4xl font-bold text-primary mb-2">2+</h3>
+                  <h3 className="text-4xl font-bold text-primary mb-2">{yearsExperience}+</h3>
                   <p className="text-muted-foreground">Years Experience</p>
                 </CardContent>
               </Card>
@@ -136,7 +147,7 @@ export default function About({ user }: IProps) {
             <motion.div variants={itemVariants}>
               <Card className="text-center hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
-                  <h3 className="text-4xl font-bold text-primary mb-2">12+</h3>
+                  <h3 className="text-4xl font-bold text-primary mb-2">{projects?.length ?? 0}+</h3>
                   <p className="text-muted-foreground">Projects Completed</p>
                 </CardContent>
               </Card>
@@ -144,15 +155,7 @@ export default function About({ user }: IProps) {
             <motion.div variants={itemVariants}>
               <Card className="text-center hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
-                  <h3 className="text-4xl font-bold text-primary mb-2">10+</h3>
-                  <p className="text-muted-foreground">Happy Clients</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-            <motion.div variants={itemVariants}>
-              <Card className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <h3 className="text-4xl font-bold text-primary mb-2">12+</h3>
+                  <h3 className="text-4xl font-bold text-primary mb-2">{user.stacks?.length ?? 0}+</h3>
                   <p className="text-muted-foreground">Technologies</p>
                 </CardContent>
               </Card>
