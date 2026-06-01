@@ -34,10 +34,6 @@ export const metadata: Metadata = {
   title: metaData.title,
   description: metaData.description,
   keywords: metaData.keywords,
-  icons: [
-    { rel: "icon", type: "image/svg+xml", url: "/favicon.svg" },
-    { rel: "icon", type: "image/x-icon", url: "/favicon.ico" },
-  ],
   openGraph: {
     type: "website",
     locale: "en_US",
