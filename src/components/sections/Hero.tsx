@@ -23,7 +23,7 @@ export default function Hero({ user, socialMedias }: IProps) {
   const profileImage =
     resolvedTheme === "dark" && user.imageUrlDark
       ? user.imageUrlDark
-      : (user.imageUrl ?? "/me.jpeg");
+      : (user.imageUrl);
 
   useEffect(() => {
     setIsVisible(true);
@@ -32,7 +32,7 @@ export default function Hero({ user, socialMedias }: IProps) {
   return (
     <section id="home" className="min-h-screen flex items-center pt-20 pb-16">
       <div className="container px-4 mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className={`grid grid-cols-1 gap-12 items-center ${profileImage ? "lg:grid-cols-2" : "max-w-2xl mx-auto"}`}>
           {/* Left Column: Text Content */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -116,23 +116,25 @@ export default function Hero({ user, socialMedias }: IProps) {
             </div>
           </motion.div>
 
-          {/* Right Column: Image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="order-1 lg:order-2 flex justify-center"
-          >
-            <div className="relative w-[280px] h-[280px] md:w-[400px] md:h-[400px] rounded-full overflow-hidden bg-primary/10 border-4 border-primary/20">
-              <Image
-                src={profileImage}
-                alt="Profile Image"
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
-          </motion.div>
+          {/* Right Column: Image (hidden if no image URL) */}
+          {profileImage && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={isVisible ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="order-1 lg:order-2 flex justify-center"
+            >
+              <div className="relative w-[280px] h-[280px] md:w-[400px] md:h-[400px] rounded-full overflow-hidden bg-primary/10 border-4 border-primary/20">
+                <Image
+                  src={profileImage}
+                  alt="Profile Image"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </motion.div>
+          )}
         </div>
 
         {/* Scroll Indicator */}

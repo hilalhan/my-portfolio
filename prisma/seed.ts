@@ -11,11 +11,9 @@ async function main() {
       email: "hhaniefam10@gmail.com",
       jobTitle: "Software Engineer",
       address: "Yogyakarta, Indonesia",
-      imageUrl:
-        "https://res.cloudinary.com/dx02t0klu/image/upload/v1780289154/haniefam_me.jpg",
+      imageUrl: null,
       imageUrlDark: null,
-      aboutImageUrl:
-        "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg",
+      aboutImageUrl: null,
       aboutImageUrlDark: null,
       resumeUrl:
         "https://docs.google.com/document/d/1_6dvxeFZYFrgJYghZl7uqzzRQ0wSyJpjhNuXBFU7I9Q/export?format=pdf",
