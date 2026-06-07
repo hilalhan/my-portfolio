@@ -21,31 +21,25 @@ export default function Header({ navItems, user }: IProps) {
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
     const sectionIds = navItems.map((item) => item.href.replace("#", ""));
 
-    const observers = sectionIds.map((id) => {
-      const el = document.getElementById(id);
-      if (!el) return null;
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setScrolled(scrollY > 20);
 
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSection(id);
-        },
-        { threshold: 0.3, rootMargin: "-80px 0px -20% 0px" }
-      );
-      observer.observe(el);
-      return observer;
-    });
+      let current = sectionIds[0] ?? "home";
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop - 120 <= scrollY) {
+          current = id;
+        }
+      }
+      setActiveSection(current);
+    };
 
-    return () => observers.forEach((obs) => obs?.disconnect());
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [navItems]);
 
   return (
@@ -148,8 +142,10 @@ export default function Header({ navItems, user }: IProps) {
                   key={item.name}
                   href={item.href}
                   className={cn(
-                    "block py-2 text-base font-medium transition-colors",
-                    isActive ? "text-primary" : "text-muted-foreground hover:text-primary"
+                    "block py-2 px-3 text-base font-medium transition-colors border-l-2",
+                    isActive
+                      ? "text-primary border-primary"
+                      : "text-muted-foreground hover:text-primary border-transparent"
                   )}
                   onClick={() => setIsOpen(false)}
                 >

@@ -22,9 +22,13 @@ export default function About({ user, experiences, projects }: IProps) {
       ? user.aboutImageUrlDark
       : user.aboutImageUrl ?? null;
 
-  const yearsExperience = experiences?.length
+  const professionalExperiences = experiences?.filter(
+    (e) => !e.title.toLowerCase().includes("intern")
+  );
+  const yearsExperience = professionalExperiences?.length
     ? Math.floor(
-        (Date.now() - Math.min(...experiences.map((e) => new Date(e.startDate).getTime()))) /
+        (Date.now() -
+          Math.min(...professionalExperiences.map((e) => new Date(e.startDate).getTime()))) /
           (1000 * 60 * 60 * 24 * 365)
       )
     : 0;
